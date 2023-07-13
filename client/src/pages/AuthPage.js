@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 
 import "./AuthPage.css";
-import AuthContext from "../context/auth-context";
+import { useAuth } from "../context/auth-context";
 
 const USER_INITIAL_STATE = {
   email: "",
@@ -12,7 +12,7 @@ const AuthPage = () => {
   const [user, setUser] = useState(USER_INITIAL_STATE);
   const [isLoginPage, setIsLoginPage] = useState(true);
 
-  const context = useContext(AuthContext);
+  const { login } = useAuth();
   const handleSwitchMode = () => {
     setIsLoginPage((prevState) => !prevState);
   };
@@ -78,7 +78,7 @@ const AuthPage = () => {
       const resData = await res.json();
       if (resData.data.login.token) {
         const { userId, token, tokenExpiration } = resData.data.login;
-        context.login(userId, token, tokenExpiration);
+        login(userId, token, tokenExpiration);
       }
       setUser(USER_INITIAL_STATE);
     } catch (err) {
